@@ -1,10 +1,37 @@
-# Folder KB Memory Template
+<p align="center">
+  <img src="docs/assets/brand.svg" width="630" alt="Folder KB Memory · 文件记忆模板">
+</p>
+
+<h3 align="center">把一次协作的经验，带到下一次对话。</h3>
+
+<p align="center">
+  用简短索引与独立记忆文件，为不同会话、不同 Agent 提供可追溯的长期上下文。
+</p>
+
+<p align="center">
+  <a href="#快速运行">快速体验</a> ·
+  <a href="#组织方式">记忆结构</a> ·
+  <a href="#安装到平台">安装到平台</a> ·
+  <a href="docs/protocol.md">更新协议</a> ·
+  <a href="https://github.com/oh-my-harness/folder-knowledge-service">Folder KB 服务</a>
+</p>
+
+<p align="center">
+  <img src="docs/assets/overview.svg" width="1280" alt="增量材料经 LLM 整理、程序校验后生成候选：knowledge 保存索引与记忆，metadata 保存来源、处理记录和待审材料；当前由 CLI 执行更新。">
+</p>
+
+<p align="center"><strong>Markdown 记忆</strong> &nbsp; / &nbsp; <strong>LLM 增量整理</strong> &nbsp; / &nbsp; <strong>来源可追溯</strong> &nbsp; / &nbsp; <strong>协议 1.1</strong></p>
+
+## 让记忆可复用
 
 将增量材料整理为可跨会话、跨 Agent 使用的文件记忆，兼容 [Folder KB](https://github.com/oh-my-harness/folder-knowledge-service) 工作目录协议 1.1。Python 3.11+，运行程序无第三方依赖。
 
-已实现：初始化、LLM 整理、结构化材料导入、去重、补充、明确纠错、冲突待审、来源追踪、幂等重放、ZIP 打包、平台注册安装与绑定联调。
+| 记住有用信息 | 持续整理更新 | 连接你的 Agent |
+|---|---|---|
+| 用户偏好、行为反馈、项目约定、资料位置，按适用范围保存。 | 去重、补充、明确纠错与冲突待审，保留来源和变更记录。 | 打包为 Folder KB 模板，以现有文件读取和搜索工具使用记忆。 |
 
-**当前边界：模板生成候选工作区，不自动发布。现有平台能安装和绑定模板，但尚未提供通用更新调度和模型凭据注入；实际执行使用本仓库 CLI。安装模板不等于开启后台自动整理。**
+> [!NOTE]
+> 当前通过 CLI 执行更新，生成候选工作区后由外部流程审核发布。平台已支持安装与绑定；通用更新调度和模型凭据注入尚未实现。
 
 ## 组织方式
 
