@@ -2,7 +2,7 @@
 
 使用 Folder KB 文件协议 1.1。输入是完整更新工作区快照、request.json 和 materials.jsonl；输出是完整候选工作区和 result.json。检索目录必须是工作区的子目录，默认 knowledge；metadata/memory-template 保存更新状态，不对消费 Agent 开放。
 
-程序只生成候选，不修改输入、不发布、不操作 Git。发布者必须先校验结果及 base_version，再使用平台自己的发布机制。当前平台提供安装和绑定，尚无通用任务调度、凭据注入及发布接口。本仓库提供命令行程序和独立平台联调脚本。
+程序只生成候选，不修改输入、不发布、不操作 Git。发布者必须先校验结果及 base_version，再使用平台自己的发布机制。平台的更新进程可按绑定模板调度程序、通过环境变量注入模型连接、生成候选并等待管理员审核发布。本仓库同时保留命令行程序和独立协议联调脚本。
 
 材料沿用平台的 new_content、correction、observation。内部记忆类型 user、feedback、project、reference 只用于组织记忆，不是 MCP 新接口。observation 暂存待审；明确 correction 才允许替换已有记忆。同一材料 ID 重放幂等，ID 对应内容变化则拒绝。
 

@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/assets/overview.svg" width="1280" alt="增量材料经 LLM 整理、程序校验后生成候选：knowledge 保存索引与记忆，metadata 保存来源、处理记录和待审材料；当前由 CLI 执行更新。">
+  <img src="docs/assets/overview.svg" width="1280" alt="增量材料经 LLM 整理、程序校验后生成候选：knowledge 保存索引与记忆，metadata 保存来源、处理记录和待审材料；支持 CLI 或平台更新进程执行。">
 </p>
 
 <p align="center"><strong>Markdown 记忆</strong> &nbsp; / &nbsp; <strong>LLM 增量整理</strong> &nbsp; / &nbsp; <strong>来源可追溯</strong> &nbsp; / &nbsp; <strong>协议 1.1</strong></p>
@@ -31,7 +31,7 @@
 | 用户偏好、行为反馈、项目约定、资料位置，按适用范围保存。 | 去重、补充、明确纠错与冲突待审，保留来源和变更记录。 | 打包为 Folder KB 模板，以现有文件读取和搜索工具使用记忆。 |
 
 > [!NOTE]
-> 当前通过 CLI 执行更新，生成候选工作区后由外部流程审核发布。平台已支持安装与绑定；通用更新调度和模型凭据注入尚未实现。
+> 可使用 CLI 生成候选，也可接入 Folder KB 的更新进程：Agent 提交材料，平台按绑定模板注入模型连接并生成候选，管理员审核后发布。需要支持更新任务 API 的平台版本。
 
 ## 组织方式
 
@@ -71,7 +71,7 @@ flowchart LR
   E --> F[程序校验决策与证据]
   F --> G[候选 INDEX + 记忆文件]
   F --> H[冲突/观察待审]
-  G --> I[外部审核与发布]
+  G --> I[管理员审核与平台发布]
   I --> J[其他 Agent 读取记忆]
   J --> A
 ```
@@ -183,3 +183,21 @@ python tools/package.py
 ```
 
 接口细节见 [docs/protocol.md](docs/protocol.md)，本轮验证见 [docs/verification.md](docs/verification.md)。
+
+## 平台自动更新接入
+
+程序包和协议不变，使用 `memory-files / 0.1.0`。在平台中绑定完整工作根与 `knowledge` 检索子目录，配置 `{"mode":"llm","default_scope":"personal"}`。
+
+在“模型连接”登记模型地址、名称和 worker 中的密钥环境变量名，然后在知识库“更新设置”选择该连接，配置：
+
+```json
+{
+  "MEMORY_LLM_BASE_URL": "base_url",
+  "MEMORY_LLM_MODEL": "model",
+  "MEMORY_LLM_API_KEY": "api_key"
+}
+```
+
+确认信任当前程序包并启用更新。新库先生成并审核初始化候选；之后通过原有 `submit_material` 提交材料，更新进程生成候选。在“更新任务”查看差异、审核并发布后，其他 Agent 即可读取新记忆。`get_submission` 返回任务状态及发布回执。
+
+运行参数、密钥白名单、工作区版本切换及当前限制见平台的 [模型驱动更新说明](https://github.com/oh-my-harness/folder-knowledge-service/blob/main/docs/template-updates.md)。本模板只写候选，发布仍由平台负责。
